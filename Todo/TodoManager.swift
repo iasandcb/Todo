@@ -10,8 +10,6 @@ import Foundation
 
 protocol TodoManager {
 
-    static var sharedManager: TodoManager { get }
-    
     func numberOfTodos() -> Int
     
 }

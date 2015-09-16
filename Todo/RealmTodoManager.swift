@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 
 class RealmTodoManager : TodoManager {
-    static var sharedManager = RealmTodoManager()
+    static let sharedManager = RealmTodoManager()
     
     var todoList = [Todo]()
     
