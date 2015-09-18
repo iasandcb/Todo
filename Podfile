@@ -5,6 +5,7 @@ use_frameworks!
 target 'Todo' do
     pod 'Alamofire'
     pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
+    pod 'MZFormSheetPresentationController'
 end
 
 target 'TodoTests' do

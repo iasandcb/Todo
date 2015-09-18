@@ -14,6 +14,14 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
+    @IBAction func showAddPopup(sender: AnyObject) {
+        let navigationController = self.storyboard!.instantiateViewControllerWithIdentifier("Add") 
+        let formSheetController = MZFormSheetPresentationController(contentViewController: navigationController)
+        formSheetController.contentViewSize = CGSizeMake(250, 250)
+        
+        self.presentViewController(formSheetController, animated: true, completion: nil)
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return todoManager.numberOfTodos()
     }
