@@ -9,15 +9,17 @@
 import UIKit
 import MZFormSheetPresentationController
 
-class ViewController: UIViewController, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDataSource, AddDelegate {
     
     unowned let todoManager = TodoManager.sharedManager
+    let dateFormatter = NSDateFormatter()
     
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func showAddPopup(sender: AnyObject) {
-        let navigationController = self.storyboard!.instantiateViewControllerWithIdentifier("Add") 
-        let formSheetController = MZFormSheetPresentationController(contentViewController: navigationController)
+        let addViewController = self.storyboard!.instantiateViewControllerWithIdentifier("Add") as! AddViewController
+        addViewController.delegate = self
+        let formSheetController = MZFormSheetPresentationController(contentViewController: addViewController)
         formSheetController.contentViewSize = CGSizeMake(250, 250)
         
         self.presentViewController(formSheetController, animated: true, completion: nil)
@@ -29,23 +31,36 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("CELL", forIndexPath: indexPath)
-        cell.textLabel?.text = todoManager.todoAt(indexPath.row).title
+        let todo = todoManager.todoAt(indexPath.row)
+        cell.textLabel?.text = todo.title
+        cell.detailTextLabel?.text = dateFormatter.stringFromDate(todo.dueDate)
         return cell
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-//        self.automaticallyAdjustsScrollViewInsets = true
-        // Do any additional setup after loading the view, typically from a nib.
+    
+    func todoAdded() {
+        refreshList()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    func refreshList() {
         todoManager.getList { (Int) -> Void in
             self.tableView.reloadData()
         }
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let todo = todoManager.todoAt(tableView.indexPathForSelectedRow!.row)
+        let dest = segue.destinationViewController as! DetailViewController
+        dest.date = dateFormatter.stringFromDate(todo.dueDate)
+        dest.content = todo.title
+    }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        self.automaticallyAdjustsScrollViewInsets = true
+        refreshList()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

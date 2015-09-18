@@ -12,17 +12,25 @@ import SwiftyJSON
 
 class TodoManager {
     static let sharedManager = TodoManager()
-    
+
+    let dateFormatter = NSDateFormatter()
+
     var todoList = [Todo]()
+    
+    init() {
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+    }
     
     func getList(handler: (Int) -> Void) {
         Alamofire.request(.GET, "http://lhd1413.sshel.com/list_memo.php")
             .responseJSON { (_, _, json) in
                 let response = JSON(json.value!)
+                self.todoList.removeAll()
                 for (_, subJson):(String, JSON) in response["result"] {
-                    self.todoList.append(Todo(title: subJson["title"].stringValue, dueDate: NSDate()))
+                    var dateString = subJson["date"].stringValue
+                    dateString = dateString.substringToIndex(dateString.startIndex.advancedBy(10))
+                    self.todoList.append(Todo(title: subJson["title"].stringValue, dueDate: self.dateFormatter.dateFromString(dateString)!))
                 }
-                
                 handler(response["count"].intValue)
         }
     }
@@ -36,7 +44,7 @@ class TodoManager {
     }
     
     func addTodo(title: String, dueDate: NSDate, handler: (Bool) -> Void) {
-        Alamofire.request(.GET, "http://lhd1413.sshel.com/add_memo.php", parameters: ["title" : title, "date" : dueDate])
+        Alamofire.request(.GET, "http://lhd1413.sshel.com/add_memo.php", parameters: ["title" : title, "date" : dateFormatter.stringFromDate(dueDate)])
             .responseJSON { (_, _, json) in
                 let response = JSON(json.value!)
                 print(response)
