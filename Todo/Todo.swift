@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Todo {
-    var title : String = "No title"
-    var dueDate : NSDate = NSDate()
+struct Todo {
+    var title: String = "No title"
+    var dueDate: NSDate = NSDate()
 }
