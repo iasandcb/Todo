@@ -61,7 +61,7 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="CVc-ea-vqj">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="3ES-e9-4Bh">
+                        <barButtonItem key="rightBarButtonItem" title="Add" id="3ES-e9-4Bh">
                             <connections>
                                 <action selector="showAddPopup:" destination="BYZ-38-t0r" id="1xI-Z8-ynb"/>
                             </connections>
