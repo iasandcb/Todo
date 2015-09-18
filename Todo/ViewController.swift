@@ -25,27 +25,13 @@ class ViewController: UIViewController, UITableViewDataSource, AddDelegate {
         self.presentViewController(formSheetController, animated: true, completion: nil)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return todoManager.numberOfTodos()
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("CELL", forIndexPath: indexPath)
-        let todo = todoManager.todoAt(indexPath.row)
-        cell.textLabel?.text = todo.title
-        cell.detailTextLabel?.text = dateFormatter.stringFromDate(todo.dueDate)
-        return cell
-    }
-    
-    func todoAdded() {
-        refreshList()
-    }
-    
     func refreshList() {
         todoManager.getList { (Int) -> Void in
             self.tableView.reloadData()
         }
     }
+
+    // MARK: UIViewController
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let todo = todoManager.todoAt(tableView.indexPathForSelectedRow!.row)
@@ -66,6 +52,24 @@ class ViewController: UIViewController, UITableViewDataSource, AddDelegate {
         // Dispose of any resources that can be recreated.
     }
 
-
+    // MARK: AddDelegate
+    
+    func todoAdded() {
+        refreshList()
+    }
+    
+    // MARK: UITableViewDataSource
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return todoManager.numberOfTodos()
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("CELL", forIndexPath: indexPath)
+        let todo = todoManager.todoAt(indexPath.row)
+        cell.textLabel?.text = todo.title
+        cell.detailTextLabel?.text = dateFormatter.stringFromDate(todo.dueDate)
+        return cell
+    }
 }
 
