@@ -22,11 +22,11 @@ class TodoManagerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testNumberOfTodosAndTodoAt() {
+    func testGetList() {
         let expectation = self.expectationWithDescription("fetch todo list")
         let manager = TodoManager.sharedManager
-        manager.numberOfTodos { (count) in
-            XCTAssertEqual(2, count)
+        manager.getList { (count) in
+            XCTAssertEqual(manager.numberOfTodos(), count)
             XCTAssertNotNil(manager.todoAt(0))
             expectation.fulfill()
         }

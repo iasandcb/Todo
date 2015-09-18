@@ -15,7 +15,7 @@ class TodoManager {
     
     var todoList = [Todo]()
     
-    func numberOfTodos(handler: (Int) -> Void) {
+    func getList(handler: (Int) -> Void) {
         Alamofire.request(.GET, "http://lhd1413.sshel.com/list_memo.php")
             .responseJSON { (_, _, json) in
                 let response = JSON(json.value!)
@@ -25,6 +25,10 @@ class TodoManager {
                 
                 handler(response["count"].intValue)
         }
+    }
+    
+    func numberOfTodos() -> Int {
+        return todoList.count
     }
     
     func todoAt(index: Int) -> Todo {

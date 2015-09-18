@@ -10,14 +10,17 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource {
     
+    unowned let todoManager = TodoManager.sharedManager
+    
     @IBOutlet weak var tableView: UITableView!
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return todoManager.numberOfTodos()
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("CELL", forIndexPath: indexPath)
-        cell.textLabel?.text = "OK"
+        cell.textLabel?.text = todoManager.todoAt(indexPath.row).title
         return cell
     }
 
@@ -25,6 +28,13 @@ class ViewController: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
 //        self.automaticallyAdjustsScrollViewInsets = true
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        todoManager.getList { (Int) -> Void in
+            self.tableView.reloadData()
+        }
     }
 
     override func didReceiveMemoryWarning() {
