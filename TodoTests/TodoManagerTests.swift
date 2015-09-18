@@ -9,7 +9,7 @@
 import XCTest
 @testable import Todo
 
-class CloudTodoManagerTests: XCTestCase {
+class TodoManagerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
@@ -23,7 +23,7 @@ class CloudTodoManagerTests: XCTestCase {
     
     func testNumberOfTodos() {
         let expectation = self.expectationWithDescription("fetch todo list")
-        let manager = CloudTodoManager.sharedManager
+        let manager = TodoManager.sharedManager
         manager.numberOfTodos { (count) in
             XCTAssertEqual(2, count)
             expectation.fulfill()

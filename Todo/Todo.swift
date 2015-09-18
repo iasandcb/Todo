@@ -7,9 +7,8 @@
 //
 
 import Foundation
-import RealmSwift
 
-class Todo: Object {
-    dynamic var title : String = "No title"
-    dynamic var dueDate : NSDate = NSDate()
+class Todo {
+    var title : String = "No title"
+    var dueDate : NSDate = NSDate()
 }
